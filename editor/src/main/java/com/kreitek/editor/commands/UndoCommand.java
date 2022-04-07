@@ -16,7 +16,12 @@ public class UndoCommand implements Command {
     @Override
     public void execute(EditorCareTaker careTaker, ArrayList<String> documentLines) {
         // documentLines = careTaker.pop().getState(); ¿Debería funcionar? Estoy cambiando referencias...
-        documentLines.removeAll(documentLines);
-        documentLines.addAll(careTaker.pop().getState());
+        try{
+            documentLines.removeAll(documentLines);
+            documentLines.addAll(careTaker.pop().getState());
+        }catch (NullPointerException e){
+            System.out.println("ERROR. No hay ningún cambio que se pueda recuperar.");
+        }
+
     }
 }
