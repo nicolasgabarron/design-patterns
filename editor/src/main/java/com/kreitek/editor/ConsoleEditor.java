@@ -1,6 +1,7 @@
 package com.kreitek.editor;
 
 import com.kreitek.editor.commands.CommandFactory;
+import com.kreitek.editor.history.EditorCareTaker;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -18,6 +19,7 @@ public class ConsoleEditor implements Editor {
 
     private final CommandFactory commandFactory = new CommandFactory();
     private ArrayList<String> documentLines = new ArrayList<String>();
+    private EditorCareTaker careTaker = new EditorCareTaker();
 
     @Override
     public void run() {
@@ -26,7 +28,7 @@ public class ConsoleEditor implements Editor {
             String commandLine = waitForNewCommand();
             try {
                 Command command = commandFactory.getCommand(commandLine);
-                command.execute(documentLines);
+                command.execute(careTaker, documentLines);
             } catch (BadCommandException e) {
                 printErrorToConsole("Bad command");
             } catch (ExitException e) {
