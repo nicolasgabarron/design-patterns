@@ -15,6 +15,8 @@ public class UndoCommand implements Command {
      */
     @Override
     public void execute(EditorCareTaker careTaker, ArrayList<String> documentLines) {
-        documentLines = careTaker.pop().getState();
+        // documentLines = careTaker.pop().getState(); ¿Debería funcionar? Estoy cambiando referencias...
+        documentLines.removeAll(documentLines);
+        documentLines.addAll(careTaker.pop().getState());
     }
 }
