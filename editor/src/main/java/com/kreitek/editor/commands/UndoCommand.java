@@ -14,11 +14,12 @@ public class UndoCommand implements Command {
      * @param documentLines Documento original del editor a modo global (Referencia).
      */
     @Override
-    public void execute(EditorCareTaker careTaker, ArrayList<String> documentLines) {
+    public void execute(ArrayList<String> documentLines) {
         // documentLines = careTaker.pop().getState(); ¿Debería funcionar? Estoy cambiando referencias...
+
         try{
-            documentLines.removeAll(documentLines);
-            documentLines.addAll(careTaker.pop().getState());
+            //documentLines.removeAll(documentLines);
+            // documentLines.addAll(careTaker.pop().getState());
         }catch (NullPointerException e){
             System.out.println("ERROR. No hay ningún cambio que se pueda recuperar.");
         }

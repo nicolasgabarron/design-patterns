@@ -16,9 +16,7 @@ public class UpdateCommand implements Command {
     }
 
     @Override
-    public void execute(EditorCareTaker careTaker, ArrayList<String> documentLines) {
-        careTaker.push(new EditorMemento(documentLines)); // Creo el memento a la vez que lo guardo.
-
+    public void execute(ArrayList<String> documentLines) {
         if (documentLines.size() > lineNumber)
             documentLines.set(lineNumber, text);
         else

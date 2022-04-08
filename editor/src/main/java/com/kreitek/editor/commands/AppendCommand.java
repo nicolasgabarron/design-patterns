@@ -14,8 +14,7 @@ public class AppendCommand implements Command {
     }
 
     @Override
-    public void execute(EditorCareTaker careTaker, ArrayList<String> documentLines) {
-        careTaker.push(new EditorMemento(documentLines)); // Creo el memento a la vez que lo guardo.
+    public void execute(ArrayList<String> documentLines) {
         documentLines.add(text);
     }
 }

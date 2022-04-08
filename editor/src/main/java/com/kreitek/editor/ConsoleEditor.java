@@ -1,7 +1,12 @@
 package com.kreitek.editor;
 
+import com.kreitek.editor.commands.AppendCommand;
 import com.kreitek.editor.commands.CommandFactory;
+import com.kreitek.editor.commands.UndoCommand;
 import com.kreitek.editor.history.EditorCareTaker;
+import com.kreitek.editor.listeners.UndoListener;
+import com.kreitek.editor.listeners.UpdateDocumentListener;
+import com.kreitek.editor.publishers.EventManager;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -20,15 +25,30 @@ public class ConsoleEditor implements Editor {
     private final CommandFactory commandFactory = new CommandFactory();
     private ArrayList<String> documentLines = new ArrayList<String>();
     private EditorCareTaker careTaker = new EditorCareTaker();
+    private EventManager eventManager;
 
     @Override
     public void run() {
+        // Creo el eventManager pasandole los eventos.
+        eventManager = new EventManager("updateDocument", "undoDocument");
+        // Subscribo los eventos.
+        eventManager.subscribe("updateDocument", new UpdateDocumentListener(careTaker));
+        eventManager.subscribe("undoDocument", new UndoListener(careTaker));
+
         boolean exit = false;
         while (!exit) {
             String commandLine = waitForNewCommand();
             try {
                 Command command = commandFactory.getCommand(commandLine);
-                command.execute(careTaker, documentLines);
+
+                // Reconozco el comando introducido.
+                if(command instanceof UndoCommand){
+                    eventManager.notify("undoDocument", documentLines);
+                }else{
+                    eventManager.notify("updateDocument", documentLines);
+                }
+
+                command.execute(documentLines);
             } catch (BadCommandException e) {
                 printErrorToConsole("Bad command");
             } catch (ExitException e) {
