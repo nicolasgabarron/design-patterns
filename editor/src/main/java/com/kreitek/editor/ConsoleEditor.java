@@ -30,7 +30,8 @@ public class ConsoleEditor implements Editor {
     @Override
     public void run() {
         // Creo el eventManager pasandole los eventos.
-        eventManager = new EventManager("updateDocument", "undoDocument");
+        eventManager = EventManager.getInstance();
+
         // Subscribo los eventos.
         eventManager.subscribe("updateDocument", new UpdateDocumentListener(careTaker));
         eventManager.subscribe("undoDocument", new UndoListener(careTaker));

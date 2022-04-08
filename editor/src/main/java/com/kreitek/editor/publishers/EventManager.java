@@ -2,6 +2,7 @@ package com.kreitek.editor.publishers;
 
 
 import com.kreitek.editor.listeners.EventListener;
+import jdk.jfr.Event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,14 +11,33 @@ import java.util.Map;
 
 public class EventManager {
     private Map<String, List<EventListener>> listeners = new HashMap<>();
+    private static final String[] eventNames = {"updateDocument", "undoDocument"};
+    private static EventManager eventManager;
+
+    /**
+     * PATRÓN SINGLETON.
+     * Método que nos devuelve una instancia de EventManager.
+     *
+     * @return Instancia de EventManager.
+     */
+    public static EventManager getInstance(){
+        if(eventManager==null){
+            eventManager = new EventManager(eventNames);
+        }
+
+        return eventManager;
+    }
 
     /**
      * Constructor por defecto mediante el cual se crean eventos con un nombre
      * y asociados a ese nombre llevan una lista de "subscriptores".
      *
+     * Privado para que la única manera de instanciar la clase sea mediante el método
+     * "getInstance()".
+     *
      * @param operations Lista de nombres de evento.
      */
-    public EventManager(String... operations){
+    private EventManager(String[] operations){
         for (String operation : operations) {
             this.listeners.put(operation, new ArrayList<>());
         }
@@ -47,6 +67,14 @@ public class EventManager {
         subscribers.remove(listener);
     }
 
+    /**
+     * Método por el que se notifica a un evento concreto que ha de actualizar su estado.
+     *
+     * Existen dos tipos de listeners con funciones diferentes:
+     *  - UndoListener: h
+     * @param eventName
+     * @param document
+     */
     public void notify(String eventName, ArrayList<String> document){
         List<EventListener> subscribers = this.listeners.get(eventName);
         for (EventListener listener : subscribers) {

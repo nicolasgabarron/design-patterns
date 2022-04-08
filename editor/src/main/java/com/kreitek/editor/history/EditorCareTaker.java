@@ -1,11 +1,34 @@
 package com.kreitek.editor.history;
 
+import com.kreitek.editor.Editor;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditorCareTaker {
     // Propiedades.
     private List<EditorMemento> mementoList = new ArrayList<>();
+    private static EditorCareTaker careTaker;
+
+    /**
+     * PATRÓN SINGLETON.
+     * Método que nos devuelve una instancia de EditorCareTaker.
+     *
+     * @return Instancia de EditorCareTaker.
+     */
+    private static EditorCareTaker getInstance(){
+        if(careTaker==null){
+            careTaker = new EditorCareTaker();
+        }
+
+        return careTaker;
+    }
+
+    /**
+     * Constructor por defecto privado para que la única manera de
+     * instanciar la clase sea mediante "getInstance()".
+     */
+    private EditorCareTaker(){}
 
     /**
      * Método que introduce en la lista de mementos (pila de "snapshots") un nuevo
