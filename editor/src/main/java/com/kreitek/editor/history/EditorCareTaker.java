@@ -16,7 +16,7 @@ public class EditorCareTaker {
      *
      * @return Instancia de EditorCareTaker.
      */
-    private static EditorCareTaker getInstance(){
+    public static EditorCareTaker getInstance(){
         if(careTaker==null){
             careTaker = new EditorCareTaker();
         }

@@ -24,7 +24,6 @@ public class ConsoleEditor implements Editor {
 
     private final CommandFactory commandFactory = new CommandFactory();
     private ArrayList<String> documentLines = new ArrayList<String>();
-    private EditorCareTaker careTaker = new EditorCareTaker();
     private EventManager eventManager;
 
     @Override
@@ -33,21 +32,14 @@ public class ConsoleEditor implements Editor {
         eventManager = EventManager.getInstance();
 
         // Subscribo los eventos.
-        eventManager.subscribe("updateDocument", new UpdateDocumentListener(careTaker));
-        eventManager.subscribe("undoDocument", new UndoListener(careTaker));
+        eventManager.subscribe("saveDocument", new UpdateDocumentListener());
+        eventManager.subscribe("undoDocument", new UndoListener());
 
         boolean exit = false;
         while (!exit) {
             String commandLine = waitForNewCommand();
             try {
                 Command command = commandFactory.getCommand(commandLine);
-
-                // Reconozco el comando introducido.
-                if(command instanceof UndoCommand){
-                    eventManager.notify("undoDocument", documentLines);
-                }else{
-                    eventManager.notify("updateDocument", documentLines);
-                }
 
                 command.execute(documentLines);
             } catch (BadCommandException e) {

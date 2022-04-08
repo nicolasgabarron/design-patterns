@@ -2,27 +2,23 @@ package com.kreitek.editor.commands;
 
 import com.kreitek.editor.Command;
 import com.kreitek.editor.history.EditorCareTaker;
+import com.kreitek.editor.publishers.EventManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UndoCommand implements Command {
+    // Propiedades.
+    EventManager eventManager = EventManager.getInstance();
+
     /**
-     *  Método que utiliza la referencia al documento original para reemplazarlo
-     *  con el documento (ArrayList) recuperado del Memento.
-     * @param careTaker CareTaker del editor a modo global (Referencia).
-     * @param documentLines Documento original del editor a modo global (Referencia).
+     * Método execute que notifica al evento "undo" que debe deshacer cambios
+     * con la lista "documentLines".
+     *
+     * @param documentLines Simulación de documento..
      */
     @Override
     public void execute(ArrayList<String> documentLines) {
-        // documentLines = careTaker.pop().getState(); ¿Debería funcionar? Estoy cambiando referencias...
-
-        try{
-            //documentLines.removeAll(documentLines);
-            // documentLines.addAll(careTaker.pop().getState());
-        }catch (NullPointerException e){
-            System.out.println("ERROR. No hay ningún cambio que se pueda recuperar.");
-        }
-
+        eventManager.notify("undoDocument", documentLines);
     }
 }

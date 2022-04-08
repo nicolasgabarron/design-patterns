@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class EventManager {
     private Map<String, List<EventListener>> listeners = new HashMap<>();
-    private static final String[] eventNames = {"updateDocument", "undoDocument"};
+    private static final String[] eventNames = {"saveDocument", "undoDocument"};
     private static EventManager eventManager;
 
     /**
