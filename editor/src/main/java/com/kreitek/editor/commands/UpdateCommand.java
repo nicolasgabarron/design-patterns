@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class UpdateCommand implements Command {
     private final String text;
     private final int lineNumber;
+    private EditorCareTaker careTaker = EditorCareTaker.getInstance();
 
     public UpdateCommand(String text, int lineNumber) {
         this.text = text;
@@ -16,7 +17,7 @@ public class UpdateCommand implements Command {
     }
 
     @Override
-    public void execute(EditorCareTaker careTaker, ArrayList<String> documentLines) {
+    public void execute(ArrayList<String> documentLines) {
         careTaker.push(new EditorMemento(documentLines)); // Creo el memento a la vez que lo guardo.
 
         if (documentLines.size() > lineNumber)
