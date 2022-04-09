@@ -14,6 +14,11 @@ public class Application {
         try{
             if (args[0].equalsIgnoreCase("JSON")) {
                 documentPrinter.setPrintStrategy(new JSONStrategy());
+            }else if(args[0].equalsIgnoreCase("TEXT")){
+                documentPrinter.setPrintStrategy(new TextStrategy());
+            }else{
+                System.err.println("Método de arranque no contemplado. Revíselo.");
+                System.exit(-1);
             }
         }catch (ArrayIndexOutOfBoundsException e){
             System.out.println("No se ha especificado método de arranque... Arrancando en modo TEXTO.");
