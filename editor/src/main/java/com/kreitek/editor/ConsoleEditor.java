@@ -2,6 +2,7 @@ package com.kreitek.editor;
 
 import com.kreitek.editor.commands.CommandFactory;
 import com.kreitek.editor.history.EditorCareTaker;
+import com.kreitek.editor.utils.printers.TextPrinter;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -19,6 +20,7 @@ public class ConsoleEditor implements Editor {
 
     private final CommandFactory commandFactory = new CommandFactory();
     private ArrayList<String> documentLines = new ArrayList<String>();
+    private TextPrinter textPrinter = TextPrinter.getInstance();
 
     @Override
     public void run() {
@@ -40,49 +42,37 @@ public class ConsoleEditor implements Editor {
 
     private void showDocumentLines(ArrayList<String> textLines) {
         if (textLines.size() > 0){
-            setTextColor(TEXT_YELLOW);
-            printLnToConsole("START DOCUMENT ==>");
+            textPrinter.setTextColor(TEXT_YELLOW);
+            textPrinter.printLnToConsole("START DOCUMENT ==>");
             for (int index = 0; index < textLines.size(); index++) {
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append("[");
                 stringBuilder.append(index);
                 stringBuilder.append("] ");
                 stringBuilder.append(textLines.get(index));
-                printLnToConsole(stringBuilder.toString());
+                textPrinter.printLnToConsole(stringBuilder.toString());
             }
-            printLnToConsole("<== END DOCUMENT");
-            setTextColor(TEXT_RESET);
+            textPrinter.printLnToConsole("<== END DOCUMENT");
+            textPrinter.setTextColor(TEXT_RESET);
         }
     }
 
     private String waitForNewCommand() {
-        printToConsole("Enter a command : ");
+        textPrinter.printToConsole("Enter a command : ");
         Scanner scanner = new Scanner(System. in);
         return scanner.nextLine();
     }
 
     private void showHelp() {
-        printLnToConsole("To add new line -> a \"your text\"");
-        printLnToConsole("To update line  -> u [line number] \"your text\"");
-        printLnToConsole("To delete line  -> d [line number]");
+        textPrinter.printLnToConsole("To add new line -> a \"your text\"");
+        textPrinter.printLnToConsole("To update line  -> u [line number] \"your text\"");
+        textPrinter.printLnToConsole("To delete line  -> d [line number]");
     }
 
     private void printErrorToConsole(String message) {
-        setTextColor(TEXT_RED);
-        printToConsole(message);
-        setTextColor(TEXT_RESET);
-    }
-
-    private void setTextColor(String color) {
-        System.out.println(color);
-    }
-
-    private void printLnToConsole(String message) {
-        System.out.println(message);
-    }
-
-    private void printToConsole(String message) {
-        System.out.print(message);
+        textPrinter.setTextColor(TEXT_RED);
+        textPrinter.printToConsole(message);
+        textPrinter.setTextColor(TEXT_RESET);
     }
 
 }
