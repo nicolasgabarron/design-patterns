@@ -2,6 +2,8 @@ package com.kreitek.editor;
 
 import com.kreitek.editor.commands.CommandFactory;
 import com.kreitek.editor.history.EditorCareTaker;
+import com.kreitek.editor.strategies.PrintStrategy;
+import com.kreitek.editor.utils.printers.DocumentPrinter;
 import com.kreitek.editor.utils.printers.TextPrinter;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public class ConsoleEditor implements Editor {
     private final CommandFactory commandFactory = new CommandFactory();
     private ArrayList<String> documentLines = new ArrayList<String>();
     private TextPrinter textPrinter = TextPrinter.getInstance();
+    private PrintStrategy printStrategy = DocumentPrinter.getInstance().getPrintStrategy();
 
     @Override
     public void run() {
@@ -44,14 +47,7 @@ public class ConsoleEditor implements Editor {
         if (textLines.size() > 0){
             textPrinter.setTextColor(TEXT_YELLOW);
             textPrinter.printLnToConsole("START DOCUMENT ==>");
-            for (int index = 0; index < textLines.size(); index++) {
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append("[");
-                stringBuilder.append(index);
-                stringBuilder.append("] ");
-                stringBuilder.append(textLines.get(index));
-                textPrinter.printLnToConsole(stringBuilder.toString());
-            }
+            printStrategy.printDocument(textLines);
             textPrinter.printLnToConsole("<== END DOCUMENT");
             textPrinter.setTextColor(TEXT_RESET);
         }

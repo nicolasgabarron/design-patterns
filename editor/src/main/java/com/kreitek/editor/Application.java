@@ -11,11 +11,15 @@ public class Application {
         DocumentPrinter documentPrinter = DocumentPrinter.getInstance();
 
         // Defino la estrategia de ejecución del programa.
-        if (args[0].equalsIgnoreCase("JSON")) {
-            documentPrinter.setPrintStrategy(new JSONStrategy());
-        } else {
+        try{
+            if (args[0].equalsIgnoreCase("JSON")) {
+                documentPrinter.setPrintStrategy(new JSONStrategy());
+            }
+        }catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("No se ha especificado método de arranque... Arrancando en modo TEXTO.");
             documentPrinter.setPrintStrategy(new TextStrategy());
         }
+
 
         Editor editor = editorFactory.getEditor();
         editor.run();
